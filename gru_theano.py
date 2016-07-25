@@ -115,7 +115,7 @@ class GRUTheano:
         mc = decay * self.mc + (1 - decay) * dc ** 2
 
         self.sgd_step = theano.function(
-            [x, y, learning_rate, theano.In(decay, default=0.9)],
+            [x, y, learning_rate, theano.In(decay, value=0.9)],
             [],
             updates=[(E, E - learning_rate * dE / T.sqrt(mE + 1e-6)),
                      (U, U - learning_rate * dU / T.sqrt(mU + 1e-6)),

@@ -37,7 +37,7 @@ model = GRUTheano(VOCABULARY_SIZE, hidden_dim=HIDDEN_DIM, bptt_truncate=-1)
 t1 = time.time()
 model.sgd_step(x_train[10], y_train[10], LEARNING_RATE)
 t2 = time.time()
-print "SGD Step time: %f milliseconds" % ((t2 - t1) * 1000.)
+print ("SGD Step time: %f milliseconds" % ((t2 - t1) * 1000.))
 sys.stdout.flush()
 
 # We do this every few examples to understand what's going on

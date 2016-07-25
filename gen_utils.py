@@ -23,49 +23,45 @@ SENTENCE_START_TOKEN = "SENTENCE_START"
 SENTENCE_END_TOKEN = "SENTENCE_END"
 UNKNOWN_TOKEN = "UNKNOWN_TOKEN"
 
-#def load_data(filename="rawhelices.pkl", vocabulary_size=24, min_sent_characters=0):
+def load_data(filename="rawhelices.pkl", vocabulary_size=24, min_sent_characters=0):
 
-filename="rawhelices.pkl"
-vocabulary_size=24
-min_sent_characters=0
+        word_to_index = []
+        index_to_word = []
+        sentences=[]
 
-word_to_index = []
-index_to_word = []
-sentences=[]
+        f = pickle.load(open(filename, 'rb'))
+        for helices in f:
+            sentence = " ".join(helices)
+            sentences.append(sentence)
+            if len(sentences)==len(f):
+                sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]
+        print("Parsed %d sentences." % (len(sentences)))
 
-f = pickle.load(open(filename, 'rb'))
-for helices in f:
-    sentence = " ".join(helices)
-    sentences.append(sentence)
-    if len(sentences)==len(f):
-        sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]
-print("Parsed %d sentences." % (len(sentences)))
+        tokenized_sentences = [nltk.word_tokenize(sent) for sent in sentences]
 
-tokenized_sentences = [nltk.word_tokenize(sent) for sent in sentences]
+        # Count the word frequencies
+        word_freq = nltk.FreqDist(itertools.chain(*tokenized_sentences))
+        print("Found %d unique words tokens." % len(word_freq.items()))
 
-# Count the word frequencies
-word_freq = nltk.FreqDist(itertools.chain(*tokenized_sentences))
-print("Found %d unique words tokens." % len(word_freq.items()))
+        # Get the most common words and build index_to_word and word_to_index vectors
+        vocab = sorted(word_freq.items(), key=lambda x: (x[1], x[0]), reverse=True)[:vocabulary_size-2]
+        print("Using vocabulary size %d." % vocabulary_size)
+        print("The least frequent word in our vocabulary is '%s' and appeared %d times." % (vocab[-1][0], vocab[-1][1]))
 
-# Get the most common words and build index_to_word and word_to_index vectors
-vocab = sorted(word_freq.items(), key=lambda x: (x[1], x[0]), reverse=True)[:vocabulary_size-2]
-print("Using vocabulary size %d." % vocabulary_size)
-print("The least frequent word in our vocabulary is '%s' and appeared %d times." % (vocab[-1][0], vocab[-1][1]))
+        sorted_vocab = sorted(vocab, key=operator.itemgetter(1))
+        index_to_word = ["<MASK/>", UNKNOWN_TOKEN] + [x[0] for x in sorted_vocab]
+        word_to_index = dict([(w, i) for i, w in enumerate(index_to_word)])
 
-sorted_vocab = sorted(vocab, key=operator.itemgetter(1))
-index_to_word = ["<MASK/>", UNKNOWN_TOKEN] + [x[0] for x in sorted_vocab]
-word_to_index = dict([(w, i) for i, w in enumerate(index_to_word)])
+        # Replace all words not in our vocabulary with the unknown token
+        for i, sent in enumerate(tokenized_sentences):
+            tokenized_sentences[i] = [w if w in word_to_index else UNKNOWN_TOKEN for w in sent]
 
-# Replace all words not in our vocabulary with the unknown token
-for i, sent in enumerate(tokenized_sentences):
-    tokenized_sentences[i] = [w if w in word_to_index else UNKNOWN_TOKEN for w in sent]
+        # Create the training data
+        X_train = np.asarray([[word_to_index[w] for w in sent[:-1]] for sent in tokenized_sentences])
+        y_train = np.asarray([[word_to_index[w] for w in sent[1:]] for sent in tokenized_sentences])
 
-# Create the training data
-X_train = np.asarray([[word_to_index[w] for w in sent[:-1]] for sent in tokenized_sentences])
-y_train = np.asarray([[word_to_index[w] for w in sent[1:]] for sent in tokenized_sentences])
-
-return (X_train, y_train, word_to_index, index_to_word)
-#print (index_to_word)
+        return (X_train, y_train, word_to_index, index_to_word)
+        #print (index_to_word)
 
 def train_with_sgd(model, X_train, y_train, learning_rate=0.001, nepoch=20, decay=0.9,
     callback_every=10000, callback=None):
@@ -89,13 +85,13 @@ def save_model_parameters_theano(model, outfile):
         V=model.V.get_value(),
         b=model.b.get_value(),
         c=model.c.get_value())
-    print "Saved model parameters to %s." % outfile
+    print ("Saved model parameters to %s." % outfile)
 
 def load_model_parameters_theano(path, modelClass=GRUTheano):
     npzfile = np.load(path)
     E, U, W, V, b, c = npzfile["E"], npzfile["U"], npzfile["W"], npzfile["V"], npzfile["b"], npzfile["c"]
     hidden_dim, word_dim = E.shape[0], E.shape[1]
-    print "Building model model from %s with hidden_dim=%d word_dim=%d" % (path, hidden_dim, word_dim)
+    print ("Building model model from %s with hidden_dim=%d word_dim=%d" % (path, hidden_dim, word_dim))
     sys.stdout.flush()
     model = modelClass(word_dim, hidden_dim=hidden_dim)
     model.E.set_value(E)
@@ -118,7 +114,7 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
         # Get the actual parameter value from the mode, e.g. model.W
         parameter_T = operator.attrgetter(pname)(model)
         parameter = parameter_T.get_value()
-        print "Performing gradient check for parameter %s with size %d." % (pname, np.prod(parameter.shape))
+        print ("Performing gradient check for parameter %s with size %d." % (pname, np.prod(parameter.shape)))
         # Iterate over each element of the parameter matrix, e.g. (0,0), (0,1), ...
         it = np.nditer(parameter, flags=['multi_index'], op_flags=['readwrite'])
         while not it.finished:
@@ -141,15 +137,15 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
             relative_error = np.abs(backprop_gradient - estimated_gradient)/(np.abs(backprop_gradient) + np.abs(estimated_gradient))
             # If the error is to large fail the gradient check
             if relative_error > error_threshold:
-                print "Gradient Check ERROR: parameter=%s ix=%s" % (pname, ix)
-                print "+h Loss: %f" % gradplus
-                print "-h Loss: %f" % gradminus
-                print "Estimated_gradient: %f" % estimated_gradient
-                print "Backpropagation gradient: %f" % backprop_gradient
-                print "Relative Error: %f" % relative_error
+                print ("Gradient Check ERROR: parameter=%s ix=%s" % (pname, ix))
+                print ("+h Loss: %f" % gradplus)
+                print ("-h Loss: %f" % gradminus)
+                print ("Estimated_gradient: %f" % estimated_gradient)
+                print ("Backpropagation gradient: %f" % backprop_gradient)
+                print ("Relative Error: %f" % relative_error)
                 return
             it.iternext()
-        print "Gradient check for parameter %s passed." % (pname)
+        print ("Gradient check for parameter %s passed." % (pname))
 
 def print_sentence(s, index_to_word):
     sentence_str = [index_to_word[x] for x in s[1:-1]]

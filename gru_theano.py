@@ -97,10 +97,10 @@ class GRUTheano:
         dc = T.grad(cost, c)
 
         # Assign functions
-        self.predict = theano.function([x], o)
-        self.predict_class = theano.function([x], prediction)
-        self.ce_error = theano.function([x, y], cost)
-        self.bptt = theano.function([x, y], [dE, dU, dW, db, dV, dc])
+        self.predict = theano.function([x], o,allow_input_downcast=True)
+        self.predict_class = theano.function([x], prediction,allow_input_downcast=True)
+        self.ce_error = theano.function([x, y], cost,allow_input_downcast=True)
+        self.bptt = theano.function([x, y], [dE, dU, dW, db, dV, dc],allow_input_downcast=True)
 
         # SGD parameters
         learning_rate = T.scalar('learning_rate')
@@ -115,7 +115,7 @@ class GRUTheano:
         mc = decay * self.mc + (1 - decay) * dc ** 2
 
         self.sgd_step = theano.function(
-            [x, y, learning_rate, theano.Param(decay, default=0.9)],
+            [x, y, learning_rate, theano.In(decay, default=0.9)],
             [],
             updates=[(E, E - learning_rate * dE / T.sqrt(mE + 1e-6)),
                      (U, U - learning_rate * dU / T.sqrt(mU + 1e-6)),
@@ -129,7 +129,7 @@ class GRUTheano:
                      (self.mV, mV),
                      (self.mb, mb),
                      (self.mc, mc)
-                    ])
+                    ],allow_input_downcast=True)
 
 
     def calculate_total_loss(self, X, Y):

@@ -192,18 +192,18 @@ def generate_sentences(model, n, index_to_word, word_to_index):
     for count, aa in enumerate(outsent):
         tempdigi = []
         for residue in range(len(aashort)):
-        try:
-            #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
-            tempdigi.append(aa_dict[aashort[residue]])
-            if len(tempdigi) == len(aashort):
-                #temphel = [x for t in tempdigi for x in t]
-                #digithelix.append(temphel)
-                digithelix.append(tempdigi)
-        except KeyError:
-            #infile.close()
-            #os.remove(pdbID + ".pdb.gz.txt")
-            #print ("Removed %s" % (pdbID))
-            #break
-            pass
+            try:
+                #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
+                tempdigi.append(aa_dict[aashort[residue]])
+                if len(tempdigi) == len(aashort):
+                    #temphel = [x for t in tempdigi for x in t]
+                    #digithelix.append(temphel)
+                    digithelix.append(tempdigi)
+            except KeyError:
+                #infile.close()
+                #os.remove(pdbID + ".pdb.gz.txt")
+                #print ("Removed %s" % (pdbID))
+                #break
+                pass
     with open("gen_helices.pkl",'wb') as f:
         pickle.dump(digithelix, f)

@@ -191,11 +191,11 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         outsent.append(outstring)
     for count, aa in enumerate(outsent):
         tempdigi = []
-        for residue in range(len(aashort)):
+        for residue in range(len(aa)):
             try:
                 #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
-                tempdigi.append(aa_dict[aashort[residue]])
-                if len(tempdigi) == len(aashort):
+                tempdigi.append(aa_dict[aa[residue]])
+                if len(tempdigi) == len(aa):
                     #temphel = [x for t in tempdigi for x in t]
                     #digithelix.append(temphel)
                     digithelix.append(tempdigi)

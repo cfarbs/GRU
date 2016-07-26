@@ -183,6 +183,7 @@ def generate_sentence(model, index_to_word, word_to_index, min_length=12):
 def generate_sentences(model, n, index_to_word, word_to_index):
     outsent = []
     digithelix = []
+    aa_dict = amino_dict
     for i in range(n):
         sent = None
         while not sent:

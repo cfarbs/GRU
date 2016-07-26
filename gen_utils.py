@@ -154,12 +154,12 @@ def print_sentence(s, index_to_word):
     sys.stdout.flush()
     return outstring
 
-def save_sentences(n):
-    outsent = []
-    outsent.append(outstring)
-    if len(outsent) == n:
-        with open("gen_helices.pkl",'wb') as f:
-            pickle.dump(outsent, f)
+#def save_sentences():
+#    outsent = []
+#    outsent.append(outstring)
+#    if len(outsent) == n:
+#        with open("gen_helices.pkl",'wb') as f:
+#            pickle.dump(outsent, f)
 
 def generate_sentence(model, index_to_word, word_to_index, min_length=12):
     # We start the sentence with the start token
@@ -180,9 +180,13 @@ def generate_sentence(model, index_to_word, word_to_index, min_length=12):
         return new_sentence
 
 def generate_sentences(model, n, index_to_word, word_to_index):
+    outsent = []
     for i in range(n):
         sent = None
         while not sent:
             sent = generate_sentence(model, index_to_word, word_to_index)
         outstring = print_sentence(sent, index_to_word)
-        save_sentences(n, outstring)
+        outsent.append(outstring)
+    if len(outsent) == n:
+        with open("gen_helices.pkl",'wb') as f:
+            pickle.dump(outsent, f)

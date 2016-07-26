@@ -191,10 +191,6 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         outsent.append(outstring)
     for count, aa in enumerate(outsent):
         tempdigi = []
-        try:
-            aastring = aa.split(" ")
-            aashort = aastring[:12]
-            raw_helix.append(aashort)
             for residue in range(len(aashort)):
                 try:
                     #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
@@ -209,7 +205,5 @@ def generate_sentences(model, n, index_to_word, word_to_index):
                     #print ("Removed %s" % (pdbID))
                     #break
                     pass
-        except AttributeError:
-            pass
     with open("gen_helices.pkl",'wb') as f:
         pickle.dump(digithelix, f)

@@ -152,7 +152,7 @@ def print_sentence(s, index_to_word):
     print(" ".join(sentence_str))
     sys.stdout.flush()
 
-def generate_sentence(model, index_to_word, word_to_index, min_length=5):
+def generate_sentence(model, index_to_word, word_to_index, min_length=12):
     # We start the sentence with the start token
     new_sentence = [word_to_index[SENTENCE_START_TOKEN]]
     # Repeat until we get an end token
@@ -165,9 +165,10 @@ def generate_sentence(model, index_to_word, word_to_index, min_length=5):
         # And: We don't want sentences with UNKNOWN_TOKEN's
         if len(new_sentence) > 100 or sampled_word == word_to_index[UNKNOWN_TOKEN]:
             return None
-    if len(new_sentence) < min_length:
+    if len(new_sentence) != min_length:
         return None
-    return new_sentence
+    else:
+        return new_sentence
 
 def generate_sentences(model, n, index_to_word, word_to_index):
     for i in range(n):

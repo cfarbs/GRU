@@ -192,15 +192,15 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         outsent.append(outstring)
     print (outsent)
     for count, aa in enumerate(outsent):
-        tempdigi = []
-        #print (aa)
-        for residue in range(len(aa)):
+#        tempdigi = []
+        print (count, aa)
+#        for residue in range(len(aa)):
             #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
             #print (residue)
-            tempdigi.append(aa_dict[aa[residue]])
-            if len(tempdigi) == len(aa):
+#            tempdigi.append(aa_dict[aa[residue]])
+#            if len(tempdigi) == len(aa):
                 #temphel = [x for t in tempdigi for x in t]
                 #digithelix.append(temphel)
-                digithelix.append(tempdigi)
+#                digithelix.append(tempdigi)
     with open("gen_helices.pkl",'wb') as f:
         pickle.dump(digithelix, f)

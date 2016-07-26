@@ -195,9 +195,10 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         tempdigi = []
 #        print (count, aa)
         aashort = aa
+        aashort = aashort.split(" ")
         for residue in range(len(aashort)):
             #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
-            print (residue)
+            print (aashort[residue])
 #            tempdigi.append(aa_dict[aa[residue]])
 #            if len(tempdigi) == len(aa):
                 #temphel = [x for t in tempdigi for x in t]

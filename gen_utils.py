@@ -165,7 +165,7 @@ def generate_sentence(model, index_to_word, word_to_index, min_length=12):
         # And: We don't want sentences with UNKNOWN_TOKEN's
         if len(new_sentence) > 100 or sampled_word == word_to_index[UNKNOWN_TOKEN]:
             return None
-    if len(new_sentence) != min_length:
+    if len(new_sentence)-2 != min_length:
         return None
     else:
         return new_sentence

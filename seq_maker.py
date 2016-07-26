@@ -20,4 +20,4 @@ x_train, y_train, word_to_index, index_to_word = load_data(filename ="rawhelices
 
 model = load_model_parameters_theano("GRU-2016-07-25-15-07-24-48-128.dat.npz")
 
-generate_sentences(model, 1, index_to_word, word_to_index)
+generate_sentences(model, 25, index_to_word, word_to_index)

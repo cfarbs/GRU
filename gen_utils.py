@@ -150,7 +150,16 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
 def print_sentence(s, index_to_word):
     sentence_str = [index_to_word[x] for x in s[1:-1]]
     print(" ".join(sentence_str))
+    outstring = " ".join(sentence_str)
     sys.stdout.flush()
+    return outstring
+
+def save_sentences(n):
+    outsent = []
+    outsent.append(outstring)
+    if len(outsent) == n:
+        with open("gen_helices.pkl",'wb') as f:
+            pickle.dump(outsent, f)
 
 def generate_sentence(model, index_to_word, word_to_index, min_length=12):
     # We start the sentence with the start token
@@ -176,3 +185,4 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         while not sent:
             sent = generate_sentence(model, index_to_word, word_to_index)
         print_sentence(sent, index_to_word)
+        save_sentences(n)

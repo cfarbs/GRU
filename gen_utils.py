@@ -185,4 +185,4 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         while not sent:
             sent = generate_sentence(model, index_to_word, word_to_index)
         outstring = print_sentence(sent, index_to_word)
-        save_sentences(n)
+        save_sentences(n, outstring)

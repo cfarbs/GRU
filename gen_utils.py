@@ -190,9 +190,10 @@ def generate_sentences(model, n, index_to_word, word_to_index):
             sent = generate_sentence(model, index_to_word, word_to_index)
         outstring = print_sentence(sent, index_to_word)
         outsent.append(outstring)
+    print (outsent)
     for count, aa in enumerate(outsent):
         tempdigi = []
-        print (aa)
+        #print (aa)
         for residue in range(len(aa)):
             #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
             #print (residue)

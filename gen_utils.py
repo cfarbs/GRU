@@ -17,14 +17,14 @@ import operator
 import io
 import array
 from datetime import datetime
-from prot_to_num import amino_dict
-from gru_theano import GRUTheano
+from .prot_to_num import amino_dict
+from .gru_theano import GRUTheano
 
 SENTENCE_START_TOKEN = "SENTENCE_START"
 SENTENCE_END_TOKEN = "SENTENCE_END"
 UNKNOWN_TOKEN = "UNKNOWN_TOKEN"
 
-def load_data(filename="rawhelices.pkl", vocabulary_size=24, min_sent_characters=0):
+def load_data(filename, vocabulary_size=24, min_sent_characters=0):
 
         word_to_index = []
         index_to_word = []
@@ -155,12 +155,16 @@ def print_sentence(s, index_to_word):
     sys.stdout.flush()
     return outstring
 
-#def save_sentences():
-#    outsent = []
-#    outsent.append(outstring)
-#    if len(outsent) == n:
-#        with open("gen_helices.pkl",'wb') as f:
-#            pickle.dump(outsent, f)
+def sgd_callback(model, num_examples_seen):
+  dt = datetime.now().isoformat()
+  loss = model.calculate_loss(x_train[:10000], y_train[:10000])
+  print("\n%s (%d)" % (dt, num_examples_seen))
+  print("--------------------------------------------------")
+  print("Loss: %f" % loss)
+  generate_sentences(model, 10, index_to_word, word_to_index)
+  save_model_parameters_theano(model, MODEL_OUTPUT_FILE)
+  print("\n")
+  sys.stdout.flush()
 
 def generate_sentence(model, index_to_word, word_to_index, min_length=12):
     # We start the sentence with the start token
@@ -205,3 +209,4 @@ def generate_sentences(model, n, index_to_word, word_to_index):
                 digithelix.append(tempdigi)
     with open("gen_helices.pkl",'wb') as f:
         pickle.dump(digithelix, f)
+    return digithelix

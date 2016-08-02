@@ -24,20 +24,22 @@ SENTENCE_START_TOKEN = "SENTENCE_START"
 SENTENCE_END_TOKEN = "SENTENCE_END"
 UNKNOWN_TOKEN = "UNKNOWN_TOKEN"
 
-def load_data(filename, vocabulary_size=24, min_sent_characters=0):
+def load_data(filename, vocabulary_size=24, min_sent_characters=0,adversarial = False):
 
         word_to_index = []
         index_to_word = []
         sentences=[]
-
-        f = pickle.load(open(filename, 'rb'))
-        print (len(f))
+        if not adversarial:
+            f = pickle.load(open(filename, 'rb'))
+        else:
+            f = filename
+        #print (len(f))
         if len(f) == 1:
             sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]
         else:
             for helices in f:
                 sentence = " ".join(helices)
-                print (sentence)
+                #print (sentence)
                 sentences.append(sentence)
                 if len(sentences)==len(f):
                     sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]

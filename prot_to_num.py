@@ -3,7 +3,7 @@
 #script to convert parsed data into useable format
 
 def amino_dict():
-    aminofilename = "amino_acid_letter_code.txt"
+    aminofilename = "GRU/amino_acid_letter_code.txt"
     aminofile = open(aminofilename, 'r')
     Amino = {}
     LineNumber = 0

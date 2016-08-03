@@ -157,6 +157,7 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
 
 def print_sentence(s, index_to_word):
     sentence_str = [index_to_word[x] for x in s[1:-1]]
+    print (sentence_str)
     outstring = " ".join(sentence_str)
     sys.stdout.flush()
     return outstring
@@ -199,6 +200,7 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         while not sent:
             sent = generate_sentence(model, index_to_word, word_to_index)
         outstring = print_sentence(sent, index_to_word)
+        print (outstring)
         outsent.append(outstring)
     for count, aa in enumerate(outsent):
         tempdigi = []
@@ -206,6 +208,8 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         aashort = aa
         aashort = aashort.split(" ")
         print (aashort)
+        if 'SENTENCE_START' or 'SENTENCE_END' in aashort:
+            continue
         for residue in range(len(aashort)):
             #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
             #print (aashort[residue])

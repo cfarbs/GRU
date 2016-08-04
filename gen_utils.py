@@ -24,7 +24,7 @@ SENTENCE_START_TOKEN = "SENTENCE_START"
 SENTENCE_END_TOKEN = "SENTENCE_END"
 UNKNOWN_TOKEN = "UNKNOWN_TOKEN"
 
-def load_data(filename, vocabulary_size=24, min_sent_characters=0,adversarial = False):
+def load_data(filename, vocabulary_size=24, min_sent_characters=0,adversarial):
 
         word_to_index = []
         index_to_word = []

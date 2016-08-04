@@ -29,10 +29,10 @@ def load_data(filename, vocabulary_size=24, min_sent_characters=0,adversarial = 
         word_to_index = []
         index_to_word = []
         sentences=[]
-        if not adversarial:
-            f = pickle.load(open(filename, 'rb'))
-        else:
+        if adversarial:
             f = filename
+        else:
+            f = pickle.load(open(filename, 'rb'))
         #print (len(f))
         if len(f) == 1:
             sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]

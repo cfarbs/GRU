@@ -190,7 +190,6 @@ def generate_sentence(model, index_to_word, word_to_index, min_length=12):
             return None
     if len(new_sentence)-2 != min_length:
         return None
-    if
     else:
         return new_sentence
 

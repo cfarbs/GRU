@@ -31,18 +31,17 @@ def load_data(adversarial, filename, vocabulary_size=24, min_sent_characters=0):
         sentences=[]
         if adversarial:
             f = filename
+            #print (f)
         else:
             f = pickle.load(open(filename, 'rb'))
-        #print (len(f))
-        if len(f) == 1:
-            sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]
-        else:
-            for helices in f:
-                sentence = " ".join(helices)
-                #print (sentence)
-                sentences.append(sentence)
-                if len(sentences)==len(f):
-                    sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]
+            #print (f)
+        #print (f)
+        for helices in f:
+            sentence = " ".join(helices)
+            #print (sentence)
+            sentences.append(sentence)
+            if len(sentences)==len(f):
+                sentences = ["%s %s %s" % (SENTENCE_START_TOKEN, x, SENTENCE_END_TOKEN) for x in sentences]
         print("Parsed %d sentences." % (len(sentences)))
 
         tokenized_sentences = [nltk.word_tokenize(sent) for sent in sentences]

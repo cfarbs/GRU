@@ -156,10 +156,13 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
 
 def print_sentence(s, index_to_word):
     sentence_str = [index_to_word[x] for x in s[1:-1]]
-    print (sentence_str)
-    outstring = " ".join(sentence_str)
-    sys.stdout.flush()
-    return outstring
+    if 'SENTENCE_START' or 'SENTENCE_END' in sentence_str:
+        return None
+    #print (sentence_str)
+    else:
+        outstring = " ".join(sentence_str)
+        sys.stdout.flush()
+        return outstring
 
 def sgd_callback(model, num_examples_seen):
   dt = datetime.now().isoformat()
@@ -187,6 +190,7 @@ def generate_sentence(model, index_to_word, word_to_index, min_length=12):
             return None
     if len(new_sentence)-2 != min_length:
         return None
+    if
     else:
         return new_sentence
 
@@ -199,7 +203,7 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         while not sent:
             sent = generate_sentence(model, index_to_word, word_to_index)
         outstring = print_sentence(sent, index_to_word)
-        print (outstring)
+        #print (outstring)
         outsent.append(outstring)
     for count, aa in enumerate(outsent):
         tempdigi = []

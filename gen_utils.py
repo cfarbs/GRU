@@ -157,7 +157,7 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
 def print_sentence(s, index_to_word):
     sentence_str = [index_to_word[x] for x in s[1:-1]]
     if 'SENTENCE_START' or 'SENTENCE_END' in sentence_str:
-        continue
+        pass
     #print (sentence_str)
     else:
         outstring = " ".join(sentence_str)

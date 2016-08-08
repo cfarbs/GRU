@@ -207,20 +207,23 @@ def generate_sentences(model, n, index_to_word, word_to_index):
     for count, aa in enumerate(outsent):
         tempdigi = []
 #        print (count, aa)
-        print (aa)
+        #print (aa)
         aashort = aa
-        aashort = aashort.split(" ")
-        print (aashort)
-        if 'SENTENCE_START' or 'SENTENCE_END' in aashort:
+        try:
+            aashort = aashort.split(" ")
+            print (aashort)
+            if 'SENTENCE_START' or 'SENTENCE_END' in aashort:
+                continue
+            for residue in range(len(aashort)):
+                #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
+                #print (aashort[residue])
+                tempdigi.append(aa_dict[aashort[residue]])
+                if len(tempdigi) == len(aashort):
+                    #temphel = [x for t in tempdigi for x in t]
+                    #digithelix.append(temphel)
+                    digithelix.append(tempdigi)
+        except AttributeError:
             continue
-        for residue in range(len(aashort)):
-            #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
-            #print (aashort[residue])
-            tempdigi.append(aa_dict[aashort[residue]])
-            if len(tempdigi) == len(aashort):
-                #temphel = [x for t in tempdigi for x in t]
-                #digithelix.append(temphel)
-                digithelix.append(tempdigi)
     with open("gen_helices.pkl",'wb') as f:
         pickle.dump(digithelix, f)
     return digithelix

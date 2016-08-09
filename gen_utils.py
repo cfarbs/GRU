@@ -25,7 +25,6 @@ SENTENCE_END_TOKEN = "SENTENCE_END"
 UNKNOWN_TOKEN = "UNKNOWN_TOKEN"
 
 def load_data(adversarial, filename, vocabulary_size=24, min_sent_characters=0):
-
         word_to_index = []
         index_to_word = []
         sentences=[]

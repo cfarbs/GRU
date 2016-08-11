@@ -155,14 +155,14 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
 
 def print_sentence(s, index_to_word):
     sentence_str = [index_to_word[x] for x in s[1:-1]]
-    if 'SENTENCE_START' or 'SENTENCE_END' in sentence_str:
-        pass
+    #if 'SENTENCE_START' or 'SENTENCE_END' in sentence_str:
+    #    pass
     #print (sentence_str)
-    else:
-        outstring = " ".join(sentence_str)
-        sys.stdout.flush()
-        print (outstring)
-        return outstring
+    #else:
+    outstring = " ".join(sentence_str)
+    sys.stdout.flush()
+    print (outstring)
+    return outstring
 
 def sgd_callback(model, num_examples_seen):
   dt = datetime.now().isoformat()

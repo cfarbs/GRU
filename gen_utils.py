@@ -18,7 +18,9 @@ import io
 import array
 from datetime import datetime
 from .prot_to_num import amino_dict
+#from prot_to_num import amino_dict
 from .gru_theano import GRUTheano
+#from gru_theano import GRUTheano
 
 SENTENCE_START_TOKEN = "SENTENCE_START"
 SENTENCE_END_TOKEN = "SENTENCE_END"
@@ -161,7 +163,7 @@ def print_sentence(s, index_to_word):
     #else:
     outstring = " ".join(sentence_str)
     sys.stdout.flush()
-    print (outstring)
+    #print (outstring)
     return outstring
 
 def sgd_callback(model, num_examples_seen):
@@ -208,22 +210,23 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         tempdigi = []
 #        print (count, aa)
         #print (aa)
-        aashort = aa
-        try:
-            aashort = aashort.split(" ")
-            if 'SENTENCE_START' or 'SENTENCE_END' in aashort:
-                continue
-            else:
-                for residue in range(len(aashort)):
-                    #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
-                    #print (aashort[residue])
-                    tempdigi.append(aa_dict[aashort[residue]])
-                    if len(tempdigi) == len(aashort):
-                        #temphel = [x for t in tempdigi for x in t]
-                        #digithelix.append(temphel)
-                        digithelix.append(tempdigi)
-        except AttributeError:
-            continue
+        aashort = aa 
+        aashort = aashort.split(" ")
+           # if 'SENTENCE_START' or 'SENTENCE_END' not in aashort:
+            #    print (aashort)  
+             #   continue
+           # else:
+        for residue in range(len(aashort)):
+             #print (aa_dict[aashort[residue]])	
+             #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
+             #print (aashort[residue])
+             tempdigi.append(aa_dict[aashort[residue]])
+             if len(tempdigi) == len(aashort):
+                  #temphel = [x for t in tempdigi for x in t]
+                  #digithelix.append(temphel)
+                  digithelix.append(tempdigi)
+       # except AttributeError:
+        #    continue
     with open("gen_helices.pkl",'wb') as f:
         pickle.dump(digithelix, f)
     return digithelix

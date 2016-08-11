@@ -211,17 +211,17 @@ def generate_sentences(model, n, index_to_word, word_to_index):
         aashort = aa
         try:
             aashort = aashort.split(" ")
-            print (aashort)
             if 'SENTENCE_START' or 'SENTENCE_END' in aashort:
                 continue
-            for residue in range(len(aashort)):
-                #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
-                #print (aashort[residue])
-                tempdigi.append(aa_dict[aashort[residue]])
-                if len(tempdigi) == len(aashort):
-                    #temphel = [x for t in tempdigi for x in t]
-                    #digithelix.append(temphel)
-                    digithelix.append(tempdigi)
+            else:
+                for residue in range(len(aashort)):
+                    #tempdigi.append(f_dict[aa_dict[aashort[residue]]])
+                    #print (aashort[residue])
+                    tempdigi.append(aa_dict[aashort[residue]])
+                    if len(tempdigi) == len(aashort):
+                        #temphel = [x for t in tempdigi for x in t]
+                        #digithelix.append(temphel)
+                        digithelix.append(tempdigi)
         except AttributeError:
             continue
     with open("gen_helices.pkl",'wb') as f:

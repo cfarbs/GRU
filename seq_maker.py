@@ -9,7 +9,7 @@ import sys
 import operator
 import io
 import array
-#from gen_utils import *
+from gen_utils import *
 from datetime import datetime
 from gru_theano import GRUTheano
 import pickle

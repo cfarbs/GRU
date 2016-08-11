@@ -161,6 +161,7 @@ def print_sentence(s, index_to_word):
     else:
         outstring = " ".join(sentence_str)
         sys.stdout.flush()
+        print (outstring)
         return outstring
 
 def sgd_callback(model, num_examples_seen):
